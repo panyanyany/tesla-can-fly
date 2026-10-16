@@ -3,7 +3,9 @@ import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 
 export function renderProfile({coarse=false,width=1280,ratio=1,override}={}){
  const low=override==='low'||(override!=='high'&&(coarse||width<=900));
- return {low,pixelRatio:Math.min(ratio,low?1:1.5),shadows:!low,antialias:!low,spotLights:low?0:4};
+ // Mobile GPUs keep the cheap lighting profile, but still need enough pixels
+ // and MSAA to avoid stair-stepped silhouettes on high-density screens.
+ return {low,pixelRatio:Math.min(ratio,1.5),shadows:!low,antialias:true,spotLights:low?0:4};
 }
 
 // Merge only non-textured, static mesh geometry. Animated wheel groups stay live.

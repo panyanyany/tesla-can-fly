@@ -4,8 +4,12 @@ import * as THREE from 'three';
 import {renderProfile,batchStaticMeshes} from './rendering.js';
 test('phones default to bounded pixel count and no per-frame shadows or spot lights',()=>{
  const p=renderProfile({coarse:true,width:1200,ratio:3});
- assert.equal(p.pixelRatio,1);assert.equal(p.shadows,false);assert.equal(p.spotLights,0);
+ assert.equal(p.pixelRatio,1.5);assert.equal(p.antialias,true);assert.equal(p.shadows,false);assert.equal(p.spotLights,0);
  assert.equal(renderProfile({width:390,ratio:3}).low,true);
+});
+test('resolution does not upscale low-density screens unnecessarily',()=>{
+ assert.equal(renderProfile({coarse:true,ratio:1}).pixelRatio,1);
+ assert.equal(renderProfile({coarse:true,ratio:1.25}).pixelRatio,1.25);
 });
 test('batching combines static meshes while keeping spinning wheels independent',()=>{
  const root=new THREE.Group(),material=new THREE.MeshStandardMaterial();
