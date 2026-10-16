@@ -31,3 +31,5 @@ html,body{width:100%;height:100%;overscroll-behavior:none}button,select{touch-ac
  .telemetry small{font-size:7px;letter-spacing:0;white-space:nowrap}.telemetry .fan span{font-size:11px}
  aside{top:111px}.bar{max-width:90%}
 }
+
+a.brand{pointer-events:auto;color:inherit;text-decoration:none}

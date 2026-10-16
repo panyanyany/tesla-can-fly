@@ -1,17 +1,26 @@
 {
-    "name": "roadster-flight-lab",
-    "private": true,
-    "version": "1.0.0",
-    "type": "module",
-    "scripts": {
-        "dev": "vite --host 127.0.0.1",
-        "build": "vite build",
-        "preview": "vite preview --host 127.0.0.1"
-    },
-    "dependencies": {
-        "three": "^0.180.0"
-    },
-    "devDependencies": {
-        "vite": "^7.1.0"
-    }
+  "name": "roadster-flight-lab",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 3000",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 3000",
+    "test": "node --test src/challenge.test.js src/collision.test.js src/locale.test.js",
+    "verify:build": "node scripts/verify-build.mjs",
+    "cf:preview": "wrangler dev --port 8787",
+    "deploy": "pnpm build && wrangler deploy"
+  },
+  "dependencies": {
+    "three": "^0.180.0",
+    "astro": "^6.0.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@9.15.1"
 }

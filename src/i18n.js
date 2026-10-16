@@ -25,10 +25,11 @@ const replacements=Object.entries(phrases).sort((a,b)=>b[0].length-a[0].length);
 const browserLanguages=navigator.languages||[navigator.language];
 let stored;try{stored=localStorage.getItem('roadster-language')}catch{}
 const requested=supportedLanguage(new URLSearchParams(location.search).get('lang')||'');
-export let language=requested||(['zh','en'].includes(stored)?stored:preferredLanguage(browserLanguages)||'en');
+const routeLanguage=supportedLanguage(location.pathname.split('/')[1]);
+export let language=routeLanguage||requested||(['zh','en'].includes(stored)?stored:preferredLanguage(browserLanguages)||'en');
 export function t(value){let text=String(value);if(language==='zh')return text;if(phrases[text])return phrases[text];for(const [zh,en] of replacements)text=text.split(zh).join(en);return text}
 export function applyLanguage(){document.documentElement.lang=language==='zh'?'zh-CN':'en';document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));document.getElementById('language').value=language;}
-export function setLanguage(next){if(!['zh','en'].includes(next))return;language=next;try{localStorage.setItem('roadster-language',next)}catch{}applyLanguage();document.getElementById('language-notice').hidden=true;window.dispatchEvent(new Event('languagechange'));}
+export function setLanguage(next){if(!['zh','en'].includes(next))return;try{localStorage.setItem('roadster-language',next)}catch{}if(routeLanguage&&next!==routeLanguage){location.assign(location.pathname.replace(/^\/(zh|en)(?=\/)/,`/${next}`));return}language=next;try{localStorage.setItem('roadster-language',next)}catch{}applyLanguage();document.getElementById('language-notice').hidden=true;window.dispatchEvent(new Event('languagechange'));}
 export function initLanguage(){
  applyLanguage();
  document.getElementById('language').onchange=e=>setLanguage(e.target.value);
