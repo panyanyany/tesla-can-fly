@@ -6,7 +6,7 @@
 
 使用 **Astro、Three.js 和 pnpm** 构建。首页是静态页面，只有游戏页加载三维场景。项目采用简化游戏物理，是独立制作的作品，与 Tesla 或 SpaceX 无隶属关系。
 
-![特斯拉能飞](public/images/roadster-hero.jpg)
+![特斯拉能飞](public/images/readme-car-ramp.jpg)
 
 ## 功能
 

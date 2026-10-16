@@ -6,7 +6,7 @@ A browser driving challenge inspired by the flying Roadster concept: climb a suc
 
 Built with **Astro**, **Three.js**, and **pnpm**. The landing pages are static; the 3D game loads only on the play pages. The project uses simplified game physics and is independently made, with no affiliation with Tesla or SpaceX.
 
-![Tesla Can Fly](public/images/roadster-hero.jpg)
+![Tesla Can Fly](public/images/readme-car-ramp.jpg)
 
 ## Features
 
