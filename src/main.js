@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {makeRoadster} from './vehicle.js';
 import './style.css';
-import {t,initLanguage} from './i18n.js';
+import {t,initLanguage,language} from './i18n.js';
+import {createRecorder} from './recording.js';
 import {initTouch} from './touch.js';
 import {updateRampProgress,canLand,landingChecks,footprint,brakeStep,predictLanding,LANDING_ZONE,thrustAcceleration,drivingKeys} from './challenge.js';
 import {rampPose, rampContact} from './collision.js';
@@ -102,4 +103,4 @@ const orientationHint=$('orientation-hint');
 function refreshOrientation(){const watch=watchOnly();$('mode').textContent=t(auto?(paused?'自动演示 · 已暂停':watch?'自动演示 · 竖屏观看':'自动演示 · 驾驶按键接管'):'手动驾驶');document.body.dataset.watchOnly=String(watch);orientationHint.hidden=!watch;$('play').disabled=watch;$('play').textContent=t(watch?'横屏后可驾驶':auto?'接管驾驶 ↗':'重新挑战 ↗');if(watch&&!auto)reset(true);}
 $('dismiss-orientation').hidden=true;
 window.addEventListener('languagechange',()=>{sceneLabels.forEach(s=>s.userData.redraw());pauseButton.textContent=t(paused?'▶ 继续 P':'Ⅱ 暂停 P');$('mode').textContent=t(auto?(paused?'自动演示 · 已暂停':watchOnly()?'自动演示 · 竖屏观看':'自动演示 · 驾驶按键接管'):'手动驾驶');$('play').textContent=t(auto?'接管驾驶 ↗':'重新挑战 ↗');$('stage').textContent=t(({run:'01 / 加速进入坡道',ramp:'02 / 风扇吸附 · 倒挂',air:'03 / 冷气推进 · 翻转',braking:'04 / 制动中 · 停稳后判定',landed:'05 / 区域内停稳',crashed:'任务中断'})[state]);if(lastReport){showLandingReport(lastReport);if(lastReason){const reason=document.createElement('p');reason.textContent=t(lastReason);$('result').append(reason)}}else if(lastMessage&&!$('result').hidden){$('result').textContent=t(lastMessage)}refreshOrientation();});
-window.addEventListener('resize',()=>{refreshOrientation();renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()});reset(true);camera.position.set(-95,9,22);if(new URLSearchParams(location.search).has('poster')){reset(false);camMode=3;document.getElementById('hud').hidden=true;}const clock=new THREE.Clock();renderer.setAnimationLoop(()=>{let dt=Math.min(clock.getDelta(),.05);if(!paused)update(dt);else updateCamera(dt);renderer.render(scene,camera)});
+window.addEventListener('resize',()=>{refreshOrientation();renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()});reset(true);camera.position.set(-95,9,22);if(new URLSearchParams(location.search).has('poster')){reset(false);camMode=3;document.getElementById('hud').hidden=true;}const recorder=createRecorder({renderer,language,restart:()=>{reset(true);camMode=0;camera.position.set(-102,9,22);},getState:()=>({state,y,gas,speed:(state==='air'?Math.hypot(vx,vy):(state==='landed'||state==='braking')?Math.abs(vx):speed)*3.6})});const clock=new THREE.Clock();renderer.setAnimationLoop(()=>{let dt=Math.min(clock.getDelta(),.05);if(!paused)update(recorder.active?dt*.72:dt);else updateCamera(dt);renderer.render(scene,camera);recorder.frame()});

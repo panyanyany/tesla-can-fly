@@ -1,26 +1,73 @@
-# Roadster / Flight Lab
+# Tesla Can Fly
 
-Astro 静态多页面网站 + Three.js 概念驾驶游戏。使用简化运动模型，并非真实车辆或飞行性能模拟，也不是 Tesla / SpaceX 官方作品。
+**English** · [简体中文](README.zh-CN.md)
 
-## 本地运行
+A browser driving challenge inspired by the flying Roadster concept: climb a suction ramp, control the car in mid-air, and stop inside the landing zone.
 
-要求 Node.js 22.12+，使用 pnpm。
+Built with **Astro**, **Three.js**, and **pnpm**. The landing pages are static; the 3D game loads only on the play pages. The project uses simplified game physics and is independently made, with no affiliation with Tesla or SpaceX.
+
+![Tesla Can Fly](public/images/roadster-hero.jpg)
+
+## Features
+
+- English and Simplified Chinese pages, with language suggestions based on browser preferences.
+- A complete automatic demo with pause, replay, and multiple camera views.
+- Keyboard controls on desktop; touch controls in mobile landscape.
+- Portrait viewing mode that prompts players to rotate before driving.
+- Suction, limited cold-gas thrust, attitude control, ramp collision checks, and landing feedback.
+- Predicted and actual touchdown markers, plus whole-car stopping checks inside the green zone.
+- Static deployment to Cloudflare Workers, without SSR or a database.
+
+## Demo videos
+
+- [Chinese portrait demo — MP4](videos/tesla-can-fly-zh-xiaohongshu.mp4)
+- [English landscape demo — MP4](videos/tesla-can-fly-en-x.mp4)
+
+Both clips capture the actual in-game scene and include localized captions and telemetry. They are silent H.264 videos at 30 fps.
+
+## Quick start
+
+Requires **Node.js 22.12+** and **pnpm 9.15.1**.
 
 ```sh
 pnpm install
 pnpm dev
 ```
 
-默认地址 http://127.0.0.1:3000/。根路径按已保存偏好或浏览器支持语言进入首页；页面本身的语言由 URL 决定。
+Open [localhost:3000](http://127.0.0.1:3000/). The root page selects a homepage using a saved language preference or the first supported browser language. With JavaScript disabled, it provides language links instead.
 
-- `/zh/`、`/en/`：中英文落地页，不加载 Three.js。
-- `/zh/play/`、`/en/play/`：点击首页 CTA 后进入的游戏页，也支持直接访问。
-- 游戏页左上角品牌返回对应语言首页。
-- 未知路径返回独立 404，不使用 SPA 兜底。
+| Route | Page |
+| --- | --- |
+| `/en/` | English landing page |
+| `/zh/` | Chinese landing page |
+| `/en/play/` | English game |
+| `/zh/play/` | Chinese game |
 
-浏览器偏好语言与页面不同且受支持时，提示可切换；不会自动切换已打开的页面。手动切换保留页面路径并保存偏好。关闭提示后本次会话不重复提醒。
+The homepage CTA opens the corresponding game page. The game’s brand link returns home. Unknown routes return a separate 404 page.
 
-## 验证和构建
+## Controls
+
+| Input | Action |
+| --- | --- |
+| W / S | Accelerate / brake |
+| A / D | Steer or move sideways |
+| Shift | Hold suction on the ramp |
+| Space | Thrust in the direction of the car’s local up axis |
+| Left / right arrows | Roll in the air |
+| Up / down arrows | Pitch in the air |
+| R | Restart the current mode |
+| C | Cycle cameras, including a close-up view |
+| P | Pause / resume the automatic demo |
+
+In mobile landscape, use the pedals, suction toggle, attitude stick, thrust button, and lateral controls. Portrait mode is watch-only. Rotating back to portrait ends the manual attempt, releases inputs, and returns to the demo.
+
+To complete a run, keep suction engaged through the inverted section and stop with the entire car inside the green zone. Landing feedback explains failed checks and their limits. The amber marker predicts touchdown using the current attitude and thrust input; the cyan marker preserves the actual contact point.
+
+## Language behavior
+
+The URL determines the page language. Switching languages preserves the page path, such as `/en/play/` → `/zh/play/`, and saves the preference locally. If the current page differs from a supported browser language, the site offers a switch instead of forcing a redirect. Dismissing the suggestion suppresses it for that language pair during the current browser session.
+
+## Build and verify
 
 ```sh
 pnpm test
@@ -29,40 +76,75 @@ pnpm verify:build
 pnpm preview
 ```
 
-`verify:build` 检查两种语言的首页/游戏路由、CTA、首页没有游戏画布或 WebGL bundle，以及静态 Worker 资源配置。
+The tests cover ramp contact, challenge qualification, stopping bounds, landing prediction, and locale selection. `verify:build` checks the generated bilingual routes, CTA links, game entry points, landing-page separation, and Worker asset configuration.
 
-## Cloudflare Workers 静态部署
+## Deploy to Cloudflare Workers
 
 ```sh
 pnpm build
 pnpm cf:preview
-# 已登录 Cloudflare 后执行：
+```
+
+The local Worker preview uses port 8787. After signing in to your Cloudflare account:
+
+```sh
+pnpm exec wrangler login
 pnpm deploy
 ```
 
-`wrangler.jsonc` 将 `dist/` 作为静态资源目录，采用 trailing slash 和 404-page。没有 SSR Worker、适配器或数据库依赖；后续有 API 需求时再加入 Worker 代码。
+`wrangler.jsonc` serves `dist/` as static assets with trailing-slash URLs and a dedicated 404 page. It does not require a server-rendering adapter or a Worker entry point. Change the Worker name before deploying if needed.
 
-Workers Builds 可使用构建命令 `pnpm build` 和部署命令 `pnpm exec wrangler deploy`。首次部署前按需更改 Worker 名称，完成自己的 Cloudflare 登录。仓库不保存凭据。
+For Workers Builds, use `pnpm build` as the build command and `pnpm exec wrangler deploy` as the deploy command. A configuration-only dry run is available with:
 
-## 页面扩展
+```sh
+pnpm exec wrangler deploy --dry-run
+```
 
-- `src/layouts/SiteLayout.astro`：共享导航、语言提示、元信息和页脚。
-- `src/pages/[lang]/index.astro`：静态首页。
-- `src/pages/[lang]/play.astro`：独立游戏页面。
-- `src/components/Game.astro`：游戏 HUD；只在游戏页面引入 `src/main.js`。
-- `src/locale.js`：纯语言选择规则，供首页与游戏共用。
-- `src/i18n.js`：游戏翻译及 URL 语言切换。
-- `src/styles/site.css`、`src/style.css`：站点和游戏样式分别加载。
-- `public/images/roadster-hero.jpg`：游戏场景实拍静态配图，无运行时代价。
+## Project structure
 
-新增内容页可在 `src/pages/[lang]/` 下增加 `.astro` 文件，使用 `getStaticPaths` 生成 zh/en，并复用 SiteLayout；导航链接应带当前语言前缀。配置正式域名后，可进一步补充绝对 canonical、sitemap 和社交分享图地址。
+```text
+src/
+  pages/
+    index.astro                 Language entry page
+    404.astro                   Not-found page
+    [lang]/index.astro          Landing page
+    [lang]/play.astro           Game page
+  layouts/SiteLayout.astro      Shared site navigation, metadata and footer
+  components/Game.astro         Game HUD and script entry
+  styles/site.css              Landing-page styles
+  main.js                      Scene, simulation and camera loop
+  vehicle.js                   Procedural Roadster model
+  collision.js                 Ramp geometry and collision helpers
+  challenge.js                 Landing checks and trajectory prediction
+  locale.js                    Shared locale selection rules
+  i18n.js                      Game translations and language switching
+  touch.js                     Pointer controls and input cleanup
+  recording.js                 Opt-in demo recording
+  style.css                    Game styles
+public/images/                 Static landing-page imagery
+scripts/verify-build.mjs        Static output checks
+videos/                        Exported demos
+qa/                            Visual QA screenshots
+```
 
-## 游戏操作
+Add future content pages under `src/pages/[lang]/`, generate both languages with `getStaticPaths()`, and reuse `SiteLayout`. Keep page links language-prefixed. After choosing a public domain, add absolute canonical URLs, a sitemap, and social sharing metadata as needed.
 
-W/S 加速制动；Shift 吸附；空格喷气；方向键调姿；A/D 转向；R 重试；C 切换视角（含近景）。自动演示支持 P 暂停，暂停可切换视角。
+## Record a demo
 
-手机竖屏仅观看，横屏解锁多指触控：加速/制动、吸附锁定、姿态摇杆、喷气与左右平移。驾驶中转为竖屏会清空输入并回到演示。
+Open `/zh/play/?record=1` or `/en/play/?record=1`, choose a portrait or landscape viewport **before loading the page**, then click the recording button. The utility records one complete automatic run as WebM, including localized captions and telemetry, without browser controls. Recording is opt-in and does not request microphone access.
 
-必须完整吸附通过倒挂段，并让整车在绿区内停稳。黄色标记为按当前姿态/喷气估算的触地点，青色标记保留实际触地点。失败后显示检查明细。
+Convert the download to MP4 with FFmpeg:
 
-`/zh/play/?poster=1` 可展示无 HUD 的停车近景，供开发时生成配图。
+```sh
+ffmpeg -i recording.webm -c:v libx264 -crf 19 -pix_fmt yuv420p -r 30 -movflags +faststart demo.mp4
+```
+
+`/en/play/?poster=1` shows a parked close-up without the HUD for generating screenshots.
+
+## Simulation scope
+
+The ramp uses a constrained path with clearance compensation and swept collision probes. Airborne motion uses simplified gravity, thrust, and attitude input. It does not model full tyre dynamics, aerodynamic flow, or real vehicle performance. The vehicle is a procedural approximation rather than a manufacturer-supplied model.
+
+## License
+
+[MIT](LICENSE) © 2026 panyanyany. Third-party dependencies retain their own licenses.

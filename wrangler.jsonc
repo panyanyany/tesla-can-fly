@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "roadster-flight-lab",
+  "name": "tesla-can-fly",
   "compatibility_date": "2026-10-16",
   "assets": {
     "directory": "./dist",

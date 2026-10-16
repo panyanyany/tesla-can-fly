@@ -5,10 +5,10 @@ const zh=lang==='zh';
 const routeSuffix=Astro.url.pathname.split('/').slice(2).join('/');
 ---
 <!doctype html><html lang={zh?'zh-CN':'en'}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="theme-color" content="#08111e"/><title>{title}</title><meta name="description" content={description}/><link rel="alternate" hreflang="zh-CN" href={`/zh/${routeSuffix}`}/><link rel="alternate" hreflang="en" href={`/en/${routeSuffix}`}/><meta property="og:title" content={title}/><meta property="og:description" content={description}/></head><body>
-<header class="site-header"><a class="logo" href={`/${lang}/`}><span>R /</span> ROADSTER <small>FLIGHT LAB</small></a><nav aria-label={zh?'主导航':'Main navigation'}><a href={`/${lang}/#mission`}>{zh?'玩法':'The mission'}</a><a href={`/${lang}/#systems`}>{zh?'两套系统':'Two systems'}</a><label class="locale-control"><span class="sr-only">Language</span><select id="site-language"><option value="zh" selected={zh}>简体中文</option><option value="en" selected={!zh}>English</option></select></label></nav></header>
+<header class="site-header"><a class="logo" href={`/${lang}/`}><span>T /</span> {zh?'特斯拉能飞':'TESLA CAN FLY'}</a><nav aria-label={zh?'主导航':'Main navigation'}><a href={`/${lang}/#mission`}>{zh?'玩法':'The mission'}</a><a href={`/${lang}/#systems`}>{zh?'两套系统':'Two systems'}</a><label class="locale-control"><span class="sr-only">Language</span><select id="site-language"><option value="zh" selected={zh}>简体中文</option><option value="en" selected={!zh}>English</option></select></label></nav></header>
 <div id="site-language-notice" class="site-language-notice" hidden><span id="site-language-message"></span><button id="site-language-switch"></button><button id="site-language-dismiss">{zh?'关闭':'Dismiss'}</button></div>
 <slot/>
-<footer class="site-footer"><a class="logo" href={`/${lang}/`}><span>R /</span> FLIGHT LAB</a><p>{zh?'独立概念游戏 · 简化物理 · 非 Tesla 或 SpaceX 官方作品':'Independent concept game · Simplified physics · Not affiliated with Tesla or SpaceX'}</p><a href="#top">{zh?'回到顶部 ↑':'Back to top ↑'}</a></footer>
+<footer class="site-footer"><a class="logo" href={`/${lang}/`}><span>T /</span> {zh?'特斯拉能飞':'TESLA CAN FLY'}</a><p>{zh?'独立概念游戏 · 简化物理 · 非 Tesla 或 SpaceX 官方作品':'Independent concept game · Simplified physics · Not affiliated with Tesla or SpaceX'}</p><a href="#top">{zh?'回到顶部 ↑':'Back to top ↑'}</a></footer>
 <script>
 import {languageSuggestion} from '../locale.js';
 const current=location.pathname.split('/')[1];

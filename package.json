@@ -1,5 +1,6 @@
 {
-  "name": "roadster-flight-lab",
+  "name": "tesla-can-fly",
+  "license": "MIT",
   "private": true,
   "version": "1.0.0",
   "type": "module",
