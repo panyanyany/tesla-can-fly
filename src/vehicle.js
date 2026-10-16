@@ -1,16 +1,19 @@
 import * as THREE from 'three';
 
+const sharedMaterials=new Map();
+function shared(key,create){if(!sharedMaterials.has(key))sharedMaterials.set(key,create());return sharedMaterials.get(key)}
+
 // Procedural, game-scale interpretation of the white 2026 reveal prototype.
 // +X forward; wheelbase and outer extents fit the existing challenge envelope.
 export function makeRoadster(color=0xe7e9e8,detailed=true){
  const car=new THREE.Group();
  const paint=new THREE.MeshPhysicalMaterial({color,metalness:.42,roughness:.24,clearcoat:1,clearcoatRoughness:.15});
- const glass=new THREE.MeshPhysicalMaterial({color:0x081a26,metalness:.55,roughness:.13,clearcoat:1});
- const carbon=new THREE.MeshStandardMaterial({color:0x10171c,metalness:.55,roughness:.45});
- const rubber=new THREE.MeshStandardMaterial({color:0x090b0d,roughness:.88});
- const alloy=new THREE.MeshStandardMaterial({color:0x71818d,metalness:.9,roughness:.24});
- const lamp=new THREE.MeshBasicMaterial({color:0xdceeff});
- const red=new THREE.MeshBasicMaterial({color:0xff2638});
+ const glass=shared('glass',()=>new THREE.MeshPhysicalMaterial({color:0x081a26,metalness:.55,roughness:.13,clearcoat:1}));
+ const carbon=shared('carbon',()=>new THREE.MeshStandardMaterial({color:0x10171c,metalness:.55,roughness:.45}));
+ const rubber=shared('rubber',()=>new THREE.MeshStandardMaterial({color:0x090b0d,roughness:.88}));
+ const alloy=shared('alloy',()=>new THREE.MeshStandardMaterial({color:0x71818d,metalness:.9,roughness:.24}));
+ const lamp=shared('lamp',()=>new THREE.MeshBasicMaterial({color:0xdceeff}));
+ const red=shared('red',()=>new THREE.MeshBasicMaterial({color:0xff2638}));
  function mesh(geo,material,parent=car){const m=new THREE.Mesh(geo,material);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
  function block(w,h,d,material,x,y,z,parent=car){const m=mesh(new THREE.BoxGeometry(w,h,d),material,parent);m.position.set(x,y,z);return m;}
  function line(points,material,radius=.015,parent=car){return mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p))),points.length*5,radius,5,false),material,parent);}

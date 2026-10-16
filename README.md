@@ -143,6 +143,8 @@ ffmpeg -i recording.webm -c:v libx264 -crf 19 -pix_fmt yuv420p -r 30 -movflags +
 
 ## Simulation scope
 
+Mobile and narrow-screen sessions default to a lightweight render profile: no real-time shadow maps or dynamic spotlights, a pixel ratio capped at 1, and batched static geometry. HUD and landing prediction refresh at 10 Hz while driving input and simulation continue every frame. Hidden tabs stop rendering. `?quality=low` can force this profile on desktop; `?perf=1` displays local renderer counters for diagnostics.
+
 The ramp uses a constrained path with clearance compensation and swept collision probes. Airborne motion uses simplified gravity, thrust, and attitude input. It does not model full tyre dynamics, aerodynamic flow, or real vehicle performance. The vehicle is a procedural approximation rather than a manufacturer-supplied model.
 
 ## License
