@@ -7,6 +7,13 @@ for(const lang of ['zh','en']){
  assert.ok(!home.includes('<canvas'),`${lang}: home must not initialize game canvas`);
  assert.ok(play.includes('id="scene"'),`${lang}: game canvas missing`);
  assert.ok(play.includes(`href="/${lang}/"`),`${lang}: home link missing`);
+ for(const policy of ['disclaimer','privacy']){
+  const html=await read(`${lang}/${policy}/index.html`);
+  assert.ok(html.includes('<h1>'),`${lang}/${policy}: missing notice`);
+  assert.ok(home.includes(`href="/${lang}/${policy}/"`),`${lang}: homepage policy link missing`);
+  assert.ok(play.includes(`href="/${lang}/${policy}/"`),`${lang}: game policy link missing`);
+  assert.ok(html.includes(`href="/${lang==='zh'?'en':'zh'}/${policy}/"`),`${lang}/${policy}: alternate locale missing`);
+ }
  for(const [name,html] of [['home',home],['play',play]]){
   assert.equal((html.match(/src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-LM61Y9VGDC"/g)||[]).length,1,`${lang}/${name}: expected one GA4 loader`);
   assert.equal((html.match(/gtag\('config', 'G-LM61Y9VGDC'\)/g)||[]).length,1,`${lang}/${name}: expected one GA4 initialization`);

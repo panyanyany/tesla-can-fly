@@ -148,3 +148,7 @@ The ramp uses a constrained path with clearance compensation and swept collision
 ## License
 
 [MIT](LICENSE) © 2026 panyanyany. Third-party dependencies retain their own licenses.
+
+## Project notices
+
+English and Chinese disclaimer and privacy pages are available at `/{lang}/disclaimer/` and `/{lang}/privacy/`. Links appear in the site footer and the game information menu. These notices are not third-party brand permissions or a guarantee of legal compliance.

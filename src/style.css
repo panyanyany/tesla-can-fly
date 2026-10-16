@@ -33,3 +33,5 @@ html,body{width:100%;height:100%;overscroll-behavior:none}button,select{touch-ac
 }
 
 a.brand{pointer-events:auto;color:inherit;text-decoration:none}
+
+.game-legal{position:absolute;right:20px;top:108px;z-index:22;pointer-events:auto;font-size:12px}.game-legal summary{cursor:pointer;list-style:none;font-size:22px;color:#aebecb;width:30px;text-align:center}.game-legal nav{position:absolute;right:0;top:35px;background:#101e2ff5;border:1px solid #ffffff35;padding:15px;width:260px;box-shadow:0 8px 28px #0006}.game-legal nav p{font-size:11px;line-height:1.7;color:#b1c1d0;margin:0 0 12px}.game-legal a{display:inline-block;color:#b8f268;text-decoration:none;margin-right:18px;font-size:12px}@media(max-width:900px),(pointer:coarse){.game-legal{right:12px;top:110px}.game-legal summary{font-size:20px}}

@@ -1,0 +1,23 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+export function getStaticPaths(){return ['zh','en'].map(lang=>({params:{lang}}))}
+const {lang}=Astro.params;const zh=lang==='zh';
+const sections=zh?[
+ ['适用范围','本说明适用于“特斯拉能飞 / Tesla Can Fly”网站。当前游戏没有账号注册、付款、聊天或收集姓名、邮箱的表单；但浏览网站时仍可能发生下述数据处理。'],
+ ['访问统计：Google Analytics','生产网站使用 Google Analytics 4（GA4）了解页面访问和使用情况。Google 可能处理第一方 Cookie、在线标识符、设备及浏览器信息、访问来源和网站交互。Google 表示 GA4 在采集过程中不记录或存储 IP 地址，但这不代表没有其他数据处理，也不代表统计数据一定匿名。具体数据保留和 Google 产品关联取决于 Analytics 后台设置。'],
+ ['本地偏好','网站使用 localStorage 保存语言偏好，使用 sessionStorage 保存本次会话中关闭语言切换提示的状态。它们与访问统计用途不同，可以通过清除本站浏览器存储删除。'],
+ ['托管与字体','正式部署使用 Cloudflare 提供网站资源，相关网络请求可能由托管服务处理。页面还使用 Google Fonts，加载字体时浏览器会向字体服务发送网络请求。这些服务可能处理 IP 地址和请求信息；具体日志及保留规则取决于服务政策和配置。'],
+ ['你的选择','你可以在浏览器中管理 Cookie、清除本站存储，或使用 Google 提供的 Analytics 退出浏览器插件。阻止统计请求不会改变游戏通关条件。已有的统计数据不会仅因清除本地偏好而自动从 Google 删除。'],
+ ['维护者与反馈','项目维护者为 panyanyany。有关本说明的问题可通过 GitHub 仓库反馈。公开 Issue 不适合提交敏感个人信息；请先询问适当的沟通方式。'],
+]:[
+ ['Scope','This notice covers the Tesla Can Fly website. The current game has no account registration, payment, chat, or forms collecting names or email addresses. Browsing the site may still involve the processing described below.'],
+ ['Analytics: Google Analytics','The production site uses Google Analytics 4 (GA4) to understand page visits and usage. Google may process first-party cookies, online identifiers, device and browser details, referral sources, and site interactions. Google states that GA4 does not log or store IP addresses during collection. This does not mean that no other data is processed or that all analytics data is anonymous. Data retention and connections to other Google products depend on Analytics account settings.'],
+ ['Local preferences','The site uses localStorage for language preferences and sessionStorage to remember dismissed language suggestions during the current session. These purposes differ from analytics. You can remove them by clearing this site’s browser storage.'],
+ ['Hosting and fonts','The deployed site uses Cloudflare to deliver resources, and network requests may be processed by the hosting provider. Pages also use Google Fonts, which causes the browser to send requests to the font service. These services may process IP addresses and request information; logging and retention depend on their policies and configuration.'],
+ ['Your choices','You can manage cookies in your browser, clear site storage, or use Google’s Analytics opt-out browser add-on. Blocking analytics requests does not change the game’s success conditions. Clearing local preferences alone does not automatically delete analytics data already held by Google.'],
+ ['Maintainer and feedback','The project maintainer is panyanyany. Questions about this notice can be raised through the GitHub repository. Public issues are not suitable for sensitive personal information; ask for an appropriate communication channel first.'],
+];
+---
+<SiteLayout lang={lang} title={zh?'隐私说明 · 特斯拉能飞':'Privacy · Tesla Can Fly'} description={zh?'访问统计、Cookie、本地偏好与第三方服务说明。':'Analytics, cookies, local preferences, and third-party services.'}>
+<main id="top" class="legal-page"><p class="eyebrow">PRIVACY NOTICE</p><h1>{zh?'隐私说明':'Privacy notice'}</h1><p class="legal-date">{zh?'更新日期：2026 年 10 月 16 日':'Updated: October 16, 2026'}</p>{sections.map(([title,body])=><section><h2>{title}</h2><p>{body}</p></section>)}<section><h2>{zh?'相关服务说明':'Service information'}</h2><ul><li><a href="https://policies.google.com/technologies/partner-sites">{zh?'Google 如何处理合作网站数据':'How Google uses data from partner sites'} ↗</a></li><li><a href="https://support.google.com/analytics/answer/6004245">Google Analytics {zh?'数据保护说明':'data safeguards'} ↗</a></li><li><a href="https://tools.google.com/dlpage/gaoptout">Google Analytics {zh?'退出浏览器插件':'opt-out browser add-on'} ↗</a></li><li><a href="https://www.cloudflare.com/privacypolicy/">Cloudflare {zh?'隐私政策':'privacy policy'} ↗</a></li><li><a href="https://github.com/panyanyany/tesla-can-fly">GitHub ↗</a></li></ul></section></main>
+</SiteLayout>

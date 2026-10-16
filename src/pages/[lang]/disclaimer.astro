@@ -1,0 +1,23 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+export function getStaticPaths(){return ['zh','en'].map(lang=>({params:{lang}}))}
+const {lang}=Astro.params;const zh=lang==='zh';
+const sections=zh?[
+ ['独立、非官方项目','“特斯拉能飞 / Tesla Can Fly”是独立制作的娱乐性浏览器游戏，与 Tesla、SpaceX 及其关联公司没有隶属、授权、赞助或认可关系。项目名称、域名和车辆形象不表示官方身份。'],
+ ['游戏效果不代表实车能力','车辆模型、坡道、推力、吸附、翻转、碰撞和着陆规则均经过艺术化处理或简化。游戏、截图和视频中的表现不构成对现实车辆规格、飞行能力、安全性、道路合法性或上市计划的确认。'],
+ ['不是驾驶或改装指导','游戏不提供现实驾驶、飞行、改装或特技训练指导。请勿把游戏操作和参数用于真实车辆，也不要尝试模仿演示中的动作。'],
+ ['名称与知识产权','Tesla、SpaceX、Roadster 等名称及相关商标归各自权利人所有。模型为程序化近似作品，不是厂商提供的模型。项目的 MIT 许可证适用于维护者有权许可的代码及作品，不授予第三方商标、车辆设计或其他第三方知识产权的使用权。'],
+ ['软件按现状提供','开源软件依照 MIT 许可证按现状提供，不承诺无错误、持续可用或适合特定用途。本说明不排除或限制适用法律不允许排除或限制的责任，也不构成车辆厂商的声明。'],
+ ['反馈与权利问题','如果你发现归属说明、素材或名称使用方面的问题，请通过项目 GitHub 仓库联系维护者，说明相关页面和权利依据。请勿在公开 Issue 中提交敏感个人信息。'],
+]:[
+ ['Independent, unofficial project','Tesla Can Fly is an independently made browser game for entertainment. It is not affiliated with, authorized, sponsored, or endorsed by Tesla, SpaceX, or their affiliates. The project name, domain, and vehicle imagery do not indicate official status.'],
+ ['Game effects are not real vehicle capabilities','The vehicle, ramp, thrust, suction, flips, collisions, and landing rules are stylized or simplified. Gameplay, screenshots, and videos do not confirm real vehicle specifications, flight capability, safety, road approval, or production plans.'],
+ ['Not driving or modification advice','This game does not provide real-world driving, aviation, modification, or stunt training. Do not apply its controls or parameters to real vehicles or attempt to reproduce its stunts.'],
+ ['Names and intellectual property','Tesla, SpaceX, Roadster, and related marks belong to their respective owners. The vehicle is a procedural approximation, not a manufacturer-supplied model. The MIT license covers only code and works the maintainers are entitled to license; it grants no rights to third-party trademarks, vehicle designs, or other third-party intellectual property.'],
+ ['Software provided as is','The open-source software is provided as is under the MIT license, without promises that it will be error-free, continuously available, or fit for a particular purpose. This notice does not exclude or limit liability that applicable law does not permit to be excluded or limited, and is not a statement by a vehicle manufacturer.'],
+ ['Feedback and rights concerns','If you identify an attribution, asset, or naming concern, contact the maintainer through the project’s GitHub repository with the relevant page and basis for your concern. Do not post sensitive personal information in public issues.'],
+];
+---
+<SiteLayout lang={lang} title={zh?'免责声明 · 特斯拉能飞':'Disclaimer · Tesla Can Fly'} description={zh?'项目非官方身份、简化游戏物理与知识产权说明。':'Unofficial status, simplified simulation, and intellectual property notice.'}>
+<main id="top" class="legal-page"><p class="eyebrow">PROJECT NOTICE</p><h1>{zh?'免责声明':'Disclaimer'}</h1><p class="legal-date">{zh?'更新日期：2026 年 10 月 16 日':'Updated: October 16, 2026'}</p>{sections.map(([title,body])=><section><h2>{title}</h2><p>{body}</p></section>)}<p><a href="https://github.com/panyanyany/tesla-can-fly">GitHub ↗</a> · <a href={`/${lang}/privacy/`}>{zh?'隐私说明':'Privacy notice'}</a> · <a href="https://github.com/panyanyany/tesla-can-fly/blob/main/LICENSE">MIT License ↗</a></p></main>
+</SiteLayout>

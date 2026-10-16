@@ -1,7 +1,7 @@
 ---
 const {lang}=Astro.props;
 ---
-<canvas id="scene" aria-label="3D driving scene"></canvas><div id="hud">
+<canvas id="scene" aria-label="3D driving scene"></canvas><div id="hud"><details class="game-legal"><summary aria-label={lang==='zh'?'项目说明':'Project information'}>ⓘ</summary><nav><p>{lang==='zh'?'非官方独立游戏 · 简化物理':'Unofficial independent game · Simplified physics'}</p><a href={`/${lang}/disclaimer/`}>{lang==='zh'?'免责声明':'Disclaimer'}</a><a href={`/${lang}/privacy/`}>{lang==='zh'?'隐私说明':'Privacy'}</a></nav></details>
 <header><a class="brand" href={`/${lang}/`} aria-label={lang==='zh'?'返回首页':'Back to home'}><span class="mark">T /</span> {lang==='zh'?'特斯拉能飞':'TESLA CAN FLY'}</a><span class="live"><i></i> McGREGOR · NIGHT SESSION</span><button id="camera" data-i18n="视角 C"></button><select id="language" aria-label="Language"><option value="zh">简体中文</option><option value="en">English</option></select></header>
 <aside><div class="eyebrow" data-i18n="EXPERIMENT 001 / 冷气推进"></div><h1 data-i18n="地面，只是起点。"></h1><p data-i18n="吸附 · 腾空 · 翻转 · 着陆"></p><div class="mode"><span id="mode"></span><b id="stage"></b></div></aside>
 <div class="telemetry"><div><span id="speed">000</span><small data-i18n="KM/H / 速度"></small></div><div><span id="alt">0.0</span><small data-i18n="METERS / 高度"></small></div><div><span id="gas">100</span><small data-i18n="% / 储气量"></small><div class="bar"><i id="gasbar"></i></div></div><div class="fan"><span id="fan">STANDBY</span><small data-i18n="SUCTION / 风扇吸附"></small></div></div>

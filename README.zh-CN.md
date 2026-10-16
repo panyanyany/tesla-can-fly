@@ -148,3 +148,7 @@ ffmpeg -i recording.webm -c:v libx264 -crf 19 -pix_fmt yuv420p -r 30 -movflags +
 ## 许可证
 
 [MIT](LICENSE) © 2026 panyanyany。第三方依赖保留各自的许可证。
+
+## 项目说明页面
+
+中英文免责声明与隐私说明位于 `/{lang}/disclaimer/`、`/{lang}/privacy/`，首页页脚和游戏信息菜单均提供入口。这些说明不等于取得第三方品牌授权，也不是法律合规保证。
