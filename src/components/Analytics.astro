@@ -1,0 +1,12 @@
+---
+// Keep local development and recording sessions out of production analytics.
+---
+{import.meta.env.PROD && <>
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-LM61Y9VGDC"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LM61Y9VGDC');
+  </script>
+</>}

@@ -7,7 +7,12 @@ for(const lang of ['zh','en']){
  assert.ok(!home.includes('<canvas'),`${lang}: home must not initialize game canvas`);
  assert.ok(play.includes('id="scene"'),`${lang}: game canvas missing`);
  assert.ok(play.includes(`href="/${lang}/"`),`${lang}: home link missing`);
+ for(const [name,html] of [['home',home],['play',play]]){
+  assert.equal((html.match(/src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-LM61Y9VGDC"/g)||[]).length,1,`${lang}/${name}: expected one GA4 loader`);
+  assert.equal((html.match(/gtag\('config', 'G-LM61Y9VGDC'\)/g)||[]).length,1,`${lang}/${name}: expected one GA4 initialization`);
+ }
  for(const match of home.matchAll(/<script[^>]+src="([^"]+)"/g)){
+  if(!match[1].startsWith('/'))continue;
   const source=await read(match[1].replace(/^\//,''));
   assert.ok(!source.includes('WebGLRenderer'),`${lang}: Three.js was bundled into landing page`);
  }
